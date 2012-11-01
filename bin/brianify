@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+var hardhat = require('hardhat')
+  , init = require('init-package-json')
+  , path = require('path')
+  , program = require('commander')
+  , version = require('../package').version
+  , footer = require('../lib/footer')
+  , spawn = require('child_process').spawn
+  , parseUrl = require('url').parse;
+
+if (!process.argv[2]) process.argv[2] = '.';
+
+program
+  .version(version)
+  .usage('<dir>');
+
+program
+  .command('*')
+  .description('brianify <dir> or current directory')
+  .action(function (dir) {
+    var origDir = dir;
+    dir = path.resolve(dir);
+    init(dir, path.resolve(__dirname, '../lib/init-file.js'), {}, function (err, data) {
+      onErr(err);
+
+      data.path = parseUrl(data.homepage).pathname;
+      data.travis_badge = '[![build status](https://secure.travis-ci.org' + data.path + '.png)](http://travis-ci.org' + data.path + ')';
+      data.name_md = data.name += '\n' + repeat('=', data.name.length);
+
+      footer(function (err, footer_text) {
+        onErr(err);
+        data.footer = footer_text;
+        var opts = {
+          data: data,
+          ext: 'hbs'
+        };
+        hardhat.scaffold(path.resolve(__dirname, '../src'), dir, opts, function (err) {
+          onErr(err);
+          var install = spawn('npm', ['install'], {cwd: dir});
+          install.stdout.pipe(process.stdout);
+          install.stderr.pipe(process.stderr);
+          install.once('close', function () {
+            console.log('\nbrianified ' + origDir);
+          });
+        });
+      });
+    });
+  });
+
+function repeat (str, len) {
+  var ret = '';
+  while (ret.length < len) ret += str;
+  return ret;
+}
+
+function onErr (err) {
+  if (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+}
+
+program.parse(process.argv);
