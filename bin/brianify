@@ -17,7 +17,7 @@ program
 
 program
   .command('*')
-  .description('brianify <dir> or current directory')
+  .description('Brianify <dir> or current directory')
   .action(function (dir) {
     var origDir = dir;
     dir = path.resolve(dir);
@@ -37,7 +37,10 @@ program
         };
         hardhat.scaffold(path.resolve(__dirname, '../src'), dir, opts, function (err) {
           onErr(err);
+
           fs.renameSync(dir + '/gitignore', dir + '/.gitignore');
+          fs.renameSync(dir + '/index.js', dir + '/' + data.name + '.js');
+
           var install = spawn('npm', ['install'], {cwd: dir});
           install.stdout.pipe(process.stdout);
           install.stderr.pipe(process.stderr);
