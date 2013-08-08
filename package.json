@@ -19,9 +19,9 @@
   "bin": "./bin/brianify",
   "dependencies": {
     "hardhat": "~0.0.7",
-    "init-package-json": "~0.0.5",
-    "commander": "~1.0.3",
-    "handlebars": "~1.0.6-2"
+    "init-package-json": "~0.0.11",
+    "commander": "~2.0.0",
+    "handlebars": "~1.0.12"
   },
   "devDependencies": {
     "mocha": "*"
