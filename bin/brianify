@@ -26,7 +26,7 @@ program
 
       data.path = parseUrl(data.homepage).pathname;
       data.travis_badge = '[![build status](https://secure.travis-ci.org' + data.path + '.png)](http://travis-ci.org' + data.path + ')';
-      data.name_md = data.name += '\n' + repeat('=', data.name.length);
+      data.name_md = data.name + '\n' + repeat('=', data.name.length);
 
       footer(function (err, footer_text) {
         onErr(err);
