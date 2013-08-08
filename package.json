@@ -2,7 +2,7 @@
   "author": "Brian Link <cpsubrian@gmail.com>",
   "name": "brianify",
   "description": "\"Brianifies\" a directory into one of his new node modules",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "repository": {
     "type": "git",
     "url": "git://github.com/cpsubrian/node-brianify.git"
