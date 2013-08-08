@@ -1,4 +1,4 @@
 brianify
 =========
 
-"Brianifies" a directory into one of his new node modules
+"Brianifies" a directory, preparing it for a new module.
