@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var hardhat = require('hardhat')
+  , fs = require('fs')
   , init = require('init-package-json')
   , path = require('path')
   , program = require('commander')
@@ -36,11 +37,12 @@ program
         };
         hardhat.scaffold(path.resolve(__dirname, '../src'), dir, opts, function (err) {
           onErr(err);
+          fs.renameSync(dir + '/gitignore', dir + '/.gitignore');
           var install = spawn('npm', ['install'], {cwd: dir});
           install.stdout.pipe(process.stdout);
           install.stderr.pipe(process.stderr);
           install.once('close', function () {
-            console.log('\nbrianified ' + origDir);
+            console.log('\nBrianified ' + origDir + ' !');
           });
         });
       });
